@@ -4,9 +4,13 @@
 
 ;; Test build-grid
 
-(let [grid (turing.build-grid 3 2)]
+(let [grid (turing.build-grid 2 3)]
   (t.is-table grid)
-  (t.eq grid [[1 1 1]
-              [1 1 1]]))
+  (for [i 1 2]
+    (for [j 1 3]
+      (let [v (. grid i j)]
+        (t.neq v 1)
+        (t.true (> v 0.97))
+        (t.true (< v 1.03))))))
 
 (t.run!)

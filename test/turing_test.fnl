@@ -13,4 +13,14 @@
         (t.true (> v 0.97))
         (t.true (< v 1.03))))))
 
+;; Test rows
+
+(let [grid (turing.build-grid 2 3)]
+  (t.eq 2 (turing.rows grid)))
+
+;; Test columns
+
+(let [grid (turing.build-grid 2 3)]
+  (t.eq 3 (turing.columns grid)))
+
 (t.run!)

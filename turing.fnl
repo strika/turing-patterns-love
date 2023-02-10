@@ -19,6 +19,9 @@
 (fn turing.columns [grid]
   (length (. grid 1)))
 
+(fn turing.neighbourhood [grid colum row]
+  1)
+
 (fn turing.update [grid]
   (each [i row (ipairs grid)]
     (each [j cell (ipairs row)]

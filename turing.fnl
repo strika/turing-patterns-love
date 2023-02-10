@@ -19,4 +19,9 @@
 (fn turing.columns [grid]
   (length (. grid 1)))
 
+(fn turing.update [grid]
+  (each [i row (ipairs grid)]
+    (each [j cell (ipairs row)]
+      (print cell))))
+
 turing

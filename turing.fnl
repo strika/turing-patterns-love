@@ -19,6 +19,9 @@
 (fn turing.columns [grid]
   (length (. grid 1)))
 
+(fn turing.cell [grid row column]
+  0)
+
 (fn turing.neighbourhood [grid colum row]
   1)
 

@@ -24,8 +24,11 @@
         c (if (> column (turing.columns grid)) 1 column)]
     (. (. grid r) c)))
 
-(fn turing.neighbourhood [grid colum row]
-  1)
+(fn turing.neighbourhood [grid column row]
+  (+ (turing.cell grid column (- row 1))
+     (turing.cell grid column (+ row 1))
+     (turing.cell grid (- column 1) row)
+     (turing.cell grid (+ column 1) row)))
 
 (fn turing.update [grid]
   (each [i row (ipairs grid)]

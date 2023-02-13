@@ -20,8 +20,10 @@
   (length (. grid 1)))
 
 (fn turing.cell [grid column row]
-  (let [r (if (> row (turing.rows grid)) 1 row)
-        c (if (> column (turing.columns grid)) 1 column)]
+  (let [c (if (> column (turing.columns grid)) 1 column)
+        c (if (< c 1) (turing.columns grid) c)
+        r (if (> row (turing.rows grid)) 1 row)
+        r (if (< r 1) (turing.rows grid) r)]
     (. (. grid r) c)))
 
 (fn turing.neighbourhood [grid column row]

@@ -34,7 +34,9 @@
   (t.eq (turing.cell grid 1 3) 1)
   (t.eq (turing.cell grid 5 1) 1)
   (t.eq (turing.cell grid 5 3) 1)
-  (t.eq (turing.cell grid 4 3) 4))
+  (t.eq (turing.cell grid 4 3) 4)
+  (t.eq (turing.cell grid 0 1) 4)
+  (t.eq (turing.cell grid 1 0) 5))
 
 ;; Test neighbourhood
 

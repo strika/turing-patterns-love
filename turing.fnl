@@ -24,7 +24,7 @@
         c (if (< c 1) (turing.columns grid) c)
         r (if (> row (turing.rows grid)) 1 row)
         r (if (< r 1) (turing.rows grid) r)]
-    (. (. grid r) c)))
+    (. grid r c)))
 
 (fn turing.neighbourhood [grid column row]
   (+ (turing.cell grid column (- row 1))

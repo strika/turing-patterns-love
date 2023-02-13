@@ -16,34 +16,34 @@
 ;; Test rows
 
 (let [grid (turing.build-grid 2 3)]
-  (t.eq 2 (turing.rows grid)))
+  (t.eq (turing.rows grid) 2))
 
 ;; Test columns
 
 (let [grid (turing.build-grid 2 3)]
-  (t.eq 3 (turing.columns grid)))
+  (t.eq (turing.columns grid) 3))
 
 ;; Test cell
 
 (let [grid [[1 2 3 4]
             [5 6 7 8]]]
-  (t.eq 1 (turing.cell 1 1))
-  (t.eq 2 (turing.cell 2 1))
-  (t.eq 5 (turing.cell 1 2))
-  (t.eq 8 (turing.cell 4 1))
-  (t.eq 1 (turing.cell 1 3))
-  (t.eq 1 (turing.cell 5 1))
-  (t.eq 1 (turing.cell 4 3))
-  (t.eq 4 (turing.cell 4 3)))
+  (t.eq (turing.cell grid 1 1) 1)
+  (t.eq (turing.cell grid 2 1) 2)
+  (t.eq (turing.cell grid 1 2) 5)
+  (t.eq (turing.cell grid 4 2) 8)
+  (t.eq (turing.cell grid 1 3) 1)
+  (t.eq (turing.cell grid 5 1) 1)
+  (t.eq (turing.cell grid 5 3) 1)
+  (t.eq (turing.cell grid 4 3) 4))
 
 ;; Test neighbourhood
 
 (let [grid [[1 2 3 4]
             [5 6 7 8]
             [9 10 11 12]]]
-  (t.eq 24 (turing.neighbourhood 2 2))
-  (t.eq 28 (turing.neighbourhood 3 2))
-  (t.eq 20 (turing.neighbourhood 1 1))
-  (t.eq 32 (turing.neighbourhood 4 3)))
+  (t.eq (turing.neighbourhood grid 2 2) 24)
+  (t.eq (turing.neighbourhood grid 3 2) 28)
+  (t.eq (turing.neighbourhood grid 1 1) 20)
+  (t.eq (turing.neighbourhood grid 4 3) 32))
 
 (t.run!)

@@ -26,11 +26,10 @@
         r (if (< r 1) (turing.rows grid) r)]
     (. grid r c)))
 
-(fn turing.neighbourhood [grid column row]
-  (+ (turing.cell grid column (- row 1))
-     (turing.cell grid column (+ row 1))
-     (turing.cell grid (- column 1) row)
-     (turing.cell grid (+ column 1) row)))
+(fn turing.neighbourhood [grid row column]
+  (accumulate [sum 0
+               _ [dr dc] (ipairs [[-1 0] [1 0] [0 -1] [0 1]])]
+    (+ sum (turing.cell grid (+ row dr) (+ column dc)))))
 
 (fn turing.update [grid]
   (each [i row (ipairs grid)]

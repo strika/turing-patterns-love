@@ -1,7 +1,18 @@
 ;;; Turing Patterns
 
 (local turing {})
+
 (local neighbourhood-coordinates [[-1 0] [1 0] [0 -1] [0 1]])
+
+; Parameters
+(local a 1)
+(local b -1)
+(local c 2)
+(local d -1.5)
+(local h 1)
+(local k 1)
+(local du 0.0001) ; diffusion constant of u
+(local dv 0.0006) ; diffusion constant of v
 
 (fn turing.noise []
   (let [c (* (math.random) 0.03)]

@@ -1,6 +1,7 @@
 ;;; Turing Patterns
 
 (local turing {})
+(local neighbourhood-coordinates [[-1 0] [1 0] [0 -1] [0 1]])
 
 (fn turing.noise []
   (let [c (* (math.random) 0.03)]
@@ -28,7 +29,7 @@
 
 (fn turing.neighbourhood [grid row column]
   (accumulate [sum 0
-               _ [dr dc] (ipairs [[-1 0] [1 0] [0 -1] [0 1]])]
+               _ [dr dc] (ipairs neighbourhood-coordinates)]
     (+ sum (turing.cell grid (+ row dr) (+ column dc)))))
 
 (fn turing.update [grid]

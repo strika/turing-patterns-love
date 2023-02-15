@@ -38,6 +38,13 @@
   (t.eq (turing.cell grid 0 1) 4)
   (t.eq (turing.cell grid 1 0) 5))
 
+;; Test update-cell
+
+(let [grid [[1 2 3]
+            [4 5 6]]]
+  (turing.update-cell grid 2 1 42)
+  (t.eq (turing.cell grid 2 1) 42))
+
 ;; Test neighbourhood
 
 (let [grid [[1 2 3 4]

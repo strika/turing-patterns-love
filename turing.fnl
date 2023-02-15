@@ -43,6 +43,9 @@
         r (if (< r 1) (turing.rows grid) r)]
     (. grid r c)))
 
+(fn turing.update-cell [grid column row value]
+  (tset (. grid row) column value))
+
 (fn turing.neighbourhood [grid row column]
   (accumulate [sum 0
                _ [dr dc] (ipairs neighbourhood-coordinates)]

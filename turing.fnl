@@ -20,10 +20,15 @@
       c
       (- 0 c))))
 
-(fn turing.build-grid [rows columns]
+(fn turing.build-grid-with-noise [rows columns]
   (fcollect [i 1 rows]
     (fcollect [j 1 columns]
       (+ 1 (turing.noise)))))
+
+(fn turing.build-grid [rows columns]
+  (fcollect [i 1 rows]
+    (fcollect [j 1 columns]
+      1)))
 
 (fn turing.rows [grid]
   (length grid))

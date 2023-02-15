@@ -2,9 +2,9 @@
 
 (local turing (require :turing))
 
-;; Test build-grid
+;; Test build-grid-with-noise
 
-(let [grid (turing.build-grid 2 3)]
+(let [grid (turing.build-grid-with-noise 2 3)]
   (t.is-table grid)
   (for [i 1 2]
     (for [j 1 3]

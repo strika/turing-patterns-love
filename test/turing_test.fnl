@@ -15,13 +15,13 @@
 
 ;; Test rows
 
-(let [grid (turing.build-grid 2 3)]
-  (t.eq (turing.rows grid) 2))
+(let [grid (turing.build-grid 3 2)]
+  (t.eq (turing.rows grid) 3))
 
 ;; Test columns
 
-(let [grid (turing.build-grid 2 3)]
-  (t.eq (turing.columns grid) 3))
+(let [grid (turing.build-grid 3 2)]
+  (t.eq (turing.columns grid) 2))
 
 ;; Test cell
 

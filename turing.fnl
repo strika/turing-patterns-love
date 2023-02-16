@@ -46,10 +46,10 @@
 (fn turing.update-cell [grid column row value]
   (tset (. grid row) column value))
 
-(fn turing.neighbourhood [grid row column]
+(fn turing.neighbourhood [grid column row]
   (accumulate [sum 0
                _ [dr dc] (ipairs neighbourhood-coordinates)]
-    (+ sum (turing.cell grid (+ row dr) (+ column dc)))))
+    (+ sum (turing.cell grid (+ column dc) (+ row dr)))))
 
 (fn turing.update [grid]
   (each [i row (ipairs grid)]

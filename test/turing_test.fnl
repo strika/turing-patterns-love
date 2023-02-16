@@ -60,4 +60,11 @@
   (t.eq (turing.neighbourhood grid 1 1) 20)
   (t.eq (turing.neighbourhood grid 4 3) 32))
 
+;; Test update
+(let [u-grid (turing.build-grid-with-noise 10 10)
+      v-grid (turing.build-grid-with-noise 10 10)
+      [new-u-grid new-v-grid] (turing.update u-grid v-grid 0.2)]
+  (t.is-table new-u-grid)
+  (t.is-table new-v-grid))
+
 (t.run!)

@@ -51,9 +51,24 @@
                _ [dr dc] (ipairs neighbourhood-coordinates)]
     (+ sum (turing.cell grid (+ column dc) (+ row dr)))))
 
-(fn turing.update [grid]
-  (each [i row (ipairs grid)]
-    (each [j cell (ipairs row)]
-      (print cell))))
+(fn turing.update [u-grid v-grid dt]
+  (local rows (turing.rows u-grid))
+  (local columns (turing.columns u-grid))
+  (local new-u-grid (turing.build-grid columns rows))
+  (local new-v-grid (turing.build-grid columns rows))
+  (local dh (/ 1 rows))
+  (for [i 1 rows]
+    (for [j 1 columns]
+      (let [uc (turing.cell u-grid j i)
+            vc (turing.cell v-grid j i)
+            u-neighbourhood (turing.neighbourhood u-grid j i)
+            v-neighbourhood (turing.neighbourhood v-grid j i)
+            u-lap (/ (- u-neighbourhood (* 4 uc)) (* dh dh))
+            v-lap (/ (- v-neighbourhood (* 4 vc)) (* dh dh))
+            new-uc (+ uc (* (+ (* a (- uc h)) (* b (- vc k)) (* du u-lap)) dt))
+            new-vc (+ vc (* (+ (* c (- vc h)) (* d (- vc k)) (* du v-lap)) dt))]
+        (turing.update-cell u-grid j i new-uc)
+        (turing.update-cell v-grid j i new-vc))))
+  [u-grid v-grid])
 
 turing

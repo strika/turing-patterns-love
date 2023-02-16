@@ -2,9 +2,14 @@
 
 (local turing (require :turing))
 
+;; Test build-grid
+
+(t.eq (turing.build-grid 3 2) [[1 1 1]
+                               [1 1 1]])
+
 ;; Test build-grid-with-noise
 
-(let [grid (turing.build-grid-with-noise 2 3)]
+(let [grid (turing.build-grid-with-noise 3 2)]
   (t.is-table grid)
   (for [i 1 2]
     (for [j 1 3]
@@ -16,12 +21,12 @@
 ;; Test rows
 
 (let [grid (turing.build-grid 3 2)]
-  (t.eq (turing.rows grid) 3))
+  (t.eq (turing.rows grid) 2))
 
 ;; Test columns
 
 (let [grid (turing.build-grid 3 2)]
-  (t.eq (turing.columns grid) 2))
+  (t.eq (turing.columns grid) 3))
 
 ;; Test cell
 

@@ -24,13 +24,12 @@
     (set v-grid new-v-grid))
   (if (= (% iteration 1000) 0)
     (print "ITERATION: " iteration))
-  (if (or (= iteration 10000))
+  (if (= iteration 100000)
     (do
       (print "U-GRID:")
       (print-grid u-grid)
       (print "V-GRID")
-      (print-grid v-grid)))
-  (if (= iteration 10000)
-    (love.event.quit)))
+      (print-grid v-grid)
+      (love.event.quit))))
 
 (fn love.draw [])

@@ -2,6 +2,7 @@
 
 (local columns 100)
 (local rows 100)
+(local pixel-size 10)
 
 (var iteration 0)
 
@@ -21,15 +22,20 @@
   (set iteration (+ iteration 1))
   (let [[new-u-grid new-v-grid] (turing.update u-grid v-grid dt)]
     (set u-grid new-u-grid)
-    (set v-grid new-v-grid))
-  (if (= (% iteration 1000) 0)
-    (print "ITERATION: " iteration))
-  (if (= iteration 100000)
-    (do
-      (print "U-GRID:")
-      (print-grid u-grid)
-      (print "V-GRID")
-      (print-grid v-grid)
-      (love.event.quit))))
+    (set v-grid new-v-grid)))
 
-(fn love.draw [])
+(fn love.draw []
+  (for [x 1 columns]
+    (for [y 1 rows]
+      (let [u (turing.cell u-grid x y)
+            v (turing.cell v-grid x y)
+            blue (math.max (math.min u 255) 0)
+            red (math.max (math.min v 255) 0)]
+        (if (and (= x 10) (= y 10))
+          (print "i: " iteration " u: " u " v: " v " blue: " blue " red: " red))
+        (love.graphics.setColor (love.math.colorFromBytes red 0 blue))
+        (love.graphics.rectangle "fill"
+                                 (* (- x 1) pixel-size)
+                                 (* (- y 1) pixel-size)
+                                 pixel-size
+                                 pixel-size)))))

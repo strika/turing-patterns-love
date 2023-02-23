@@ -20,6 +20,8 @@
 
 (fn love.update [dt]
   (set iteration (+ iteration 1))
+  (if (= 0 (% iteration 100))
+    (print "Iteration: " iteration))
   (let [[new-u-grid new-v-grid] (turing.update u-grid v-grid dt)]
     (set u-grid new-u-grid)
     (set v-grid new-v-grid)))
@@ -31,8 +33,6 @@
             v (turing.cell v-grid x y)
             blue (math.max (math.min u 255) 0)
             red (math.max (math.min v 255) 0)]
-        (if (and (= x 10) (= y 10))
-          (print "i: " iteration " u: " u " v: " v " blue: " blue " red: " red))
         (love.graphics.setColor (love.math.colorFromBytes red 0 blue))
         (love.graphics.rectangle "fill"
                                  (* (- x 1) pixel-size)

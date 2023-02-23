@@ -69,6 +69,10 @@
             v-lap (/ (- v-neighbourhood (* 4 vc)) (* dh dh))
             new-uc (+ uc (* (+ (* a (- uc h)) (* b (- vc k)) (* du u-lap)) fdt))
             new-vc (+ vc (* (+ (* c (- uc h)) (* d (- vc k)) (* dv v-lap)) fdt))]
+        (if (or (> new-uc 255) (< new-uc -255))
+          (local new-uc 1))
+        (if (or (> new-vc 255) (< new-vc -255))
+          (local new-vc 1))
         (turing.update-cell u-grid j i new-uc)
         (turing.update-cell v-grid j i new-vc))))
   [u-grid v-grid])

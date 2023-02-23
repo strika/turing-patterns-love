@@ -4,7 +4,7 @@
 
 (local neighbourhood-coordinates [[-1 0] [1 0] [0 -1] [0 1]])
 
-(local fdt 0.001) ; Fixed dt
+(local fdt 0.01) ; Fixed dt
 
 ; Parameters
 (local a 1)

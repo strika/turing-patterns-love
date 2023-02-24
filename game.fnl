@@ -24,7 +24,7 @@
 
 (fn love.update [dt]
   (set iteration (+ iteration 1))
-  (if (= 0 (% iteration 100))
+  (if (= 0 (% iteration 1000))
     (print "Iteration: " iteration))
   (let [[new-u-grid new-v-grid] (turing.update u-grid v-grid parameters fdt)]
     (set u-grid new-u-grid)
@@ -42,4 +42,6 @@
                                  (* (- x 1) pixel-size)
                                  (* (- y 1) pixel-size)
                                  pixel-size
-                                 pixel-size)))))
+                                 pixel-size))))
+  (if (= iteration 100000)
+    (love.graphics.captureScreenshot (.. "pattern-" iteration ".png"))))

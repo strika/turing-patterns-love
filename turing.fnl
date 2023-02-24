@@ -4,8 +4,6 @@
 
 (local neighbourhood-coordinates [[-1 0] [1 0] [0 -1] [0 1]])
 
-(local fdt 0.01) ; Fixed dt
-
 ; Parameters
 (local a 1)
 (local b -1)
@@ -53,7 +51,8 @@
                _ [dr dc] (ipairs neighbourhood-coordinates)]
     (+ sum (turing.cell grid (+ column dc) (+ row dr)))))
 
-(fn turing.update [u-grid v-grid dt]
+(fn turing.update [u-grid v-grid parameters dt]
+  (local {: a : b : c : d : h : k : du : dv} parameters)
   (local rows (turing.rows u-grid))
   (local columns (turing.columns u-grid))
   (local new-u-grid (turing.build-grid columns rows))
@@ -67,8 +66,8 @@
             v-neighbourhood (turing.neighbourhood v-grid j i)
             u-lap (/ (- u-neighbourhood (* 4 uc)) (* dh dh))
             v-lap (/ (- v-neighbourhood (* 4 vc)) (* dh dh))
-            new-uc (+ uc (* (+ (* a (- uc h)) (* b (- vc k)) (* du u-lap)) fdt))
-            new-vc (+ vc (* (+ (* c (- uc h)) (* d (- vc k)) (* dv v-lap)) fdt))]
+            new-uc (+ uc (* (+ (* a (- uc h)) (* b (- vc k)) (* du u-lap)) dt))
+            new-vc (+ vc (* (+ (* c (- uc h)) (* d (- vc k)) (* dv v-lap)) dt))]
         (if (or (> new-uc 255) (< new-uc -255))
           (local new-uc 1))
         (if (or (> new-vc 255) (< new-vc -255))

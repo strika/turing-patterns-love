@@ -63,7 +63,8 @@
 ;; Test update
 (let [u-grid (turing.build-grid-with-noise 10 10)
       v-grid (turing.build-grid-with-noise 10 10)
-      [new-u-grid new-v-grid] (turing.update u-grid v-grid 0.2)]
+      parameters {:a 1 :b -1 :c 2 :d -1 :h 1 :k 1 :du 0.0001 :dv 0.0006}
+      [new-u-grid new-v-grid] (turing.update u-grid v-grid parameters 0.2)]
   (t.is-table new-u-grid)
   (t.is-table new-v-grid))
 

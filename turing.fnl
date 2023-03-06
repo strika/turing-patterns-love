@@ -57,11 +57,9 @@
             u-lap (/ (- u-neighbourhood (* 4 uc)) (* dh dh))
             v-lap (/ (- v-neighbourhood (* 4 vc)) (* dh dh))
             new-uc (+ uc (* (+ (* a (- uc h)) (* b (- vc k)) (* du u-lap)) dt))
-            new-vc (+ vc (* (+ (* c (- uc h)) (* d (- vc k)) (* dv v-lap)) dt))]
-        (if (or (> new-uc 255) (< new-uc -255))
-          (local new-uc 1))
-        (if (or (> new-vc 255) (< new-vc -255))
-          (local new-vc 1))
+            new-vc (+ vc (* (+ (* c (- uc h)) (* d (- vc k)) (* dv v-lap)) dt))
+            new-uc (math.max (math.min new-uc 255) 0)
+            new-vc (math.max (math.min new-vc 255) 0)]
         (turing.update-cell u-grid j i new-uc)
         (turing.update-cell v-grid j i new-vc))))
   [u-grid v-grid])

@@ -18,7 +18,7 @@
       (print (turing.cell grid y x)))))
 
 (fn love.load []
-  (set parameters {:a 1 :b -1 :c 2 :d -1 :h 1 :k 1 :du 0.0001 :dv 0.0006})
+  (set parameters {:a 1 :b -1 :c 2 :d -1.5 :h 1 :k 1 :du 0.0001 :dv 0.0006})
   (set u-grid (turing.build-grid-with-noise columns rows))
   (set v-grid (turing.build-grid-with-noise columns rows)))
 

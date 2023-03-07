@@ -1,5 +1,7 @@
 (local turing (require :turing))
 
+(local color-multiplier 25)
+
 (local fdt 0.01) ; Fixed dt
 
 (local columns 100)
@@ -25,8 +27,8 @@
   (for [x 1 columns]
     (for [y 1 rows]
       (let [{: u : v } (turing.cell grid x y)
-            blue (math.max (math.min u 255) 0)
-            red (math.max (math.min v 255) 0)]
+            blue (math.max (math.min (* color-multiplier u) 255) 0)
+            red (math.max (math.min (* color-multiplier v) 255) 0)]
         (love.graphics.setColor (love.math.colorFromBytes red 0 blue))
         (love.graphics.rectangle "fill"
                                  (* (- x 1) pixel-size)

@@ -10,6 +10,13 @@
       c
       (- 0 c))))
 
+(fn turing.build-cell []
+  {:u 1 :v 1})
+
+(fn turing.build-cell-with-noise []
+  {:u (+ 1 (turing.noise))
+   :v (+ 1 (turing.noise))})
+
 (fn turing.build-grid-with-noise [columns rows]
   (fcollect [i 1 rows]
     (fcollect [j 1 columns]

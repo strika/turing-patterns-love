@@ -2,6 +2,21 @@
 
 (local turing (require :turing))
 
+;; Test build-cell
+
+(t.eq (turing.build-cell) {:u 1 :v 1})
+
+
+;; Test build-cell-with-noise
+
+(let [cell (turing.build-cell-with-noise)
+      u (. cell :u)
+      v (. cell :v)]
+  (t.true (> u 0.97))
+  (t.true (< u 1.03))
+  (t.true (> v 0.97))
+  (t.true (< v 1.03)))
+
 ;; Test build-grid
 
 (t.eq (turing.build-grid 3 2) [[1 1 1]

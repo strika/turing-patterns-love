@@ -19,8 +19,9 @@
 
 ;; Test build-grid
 
-(t.eq (turing.build-grid 3 2) [[1 1 1]
-                               [1 1 1]])
+(t.eq (turing.build-grid 3 2)
+      [[{:u 1 :v 1} {:u 1 :v 1} {:u 1 :v 1}]
+       [{:u 1 :v 1} {:u 1 :v 1} {:u 1 :v 1}]])
 
 ;; Test build-grid-with-noise
 
@@ -28,8 +29,11 @@
   (t.is-table grid)
   (for [i 1 2]
     (for [j 1 3]
-      (let [v (. grid i j)]
-        (t.neq v 1)
+      (let [cell (. grid i j)
+            u (. cell :u)
+            v (. cell :v)]
+        (t.true (> u 0.97))
+        (t.true (< u 1.03))
         (t.true (> v 0.97))
         (t.true (< v 1.03))))))
 
@@ -67,20 +71,22 @@
 
 ;; Test neighbourhood
 
-(let [grid [[1 2 3 4]
-            [5 6 7 8]
-            [9 10 11 12]]]
-  (t.eq (turing.neighbourhood grid 2 2) 24)
-  (t.eq (turing.neighbourhood grid 3 2) 28)
-  (t.eq (turing.neighbourhood grid 1 1) 20)
-  (t.eq (turing.neighbourhood grid 4 3) 32))
+(let [grid [[{:u 1 :v 1} {:u 2 :v 2}   {:u 3 :v 3}   {:u 4 :v 4}]
+            [{:u 5 :v 5} {:u 6 :v 6}   {:u 7 :v 7}   {:u 8 :v 8}]
+            [{:u 9 :v 9} {:u 10 :v 10} {:u 11 :v 11} {:u 12 :v 12}]]]
+  (t.eq (. (turing.neighbourhood grid 2 2) :u) 24)
+  (t.eq (. (turing.neighbourhood grid 2 2) :v) 24)
+  (t.eq (. (turing.neighbourhood grid 3 2) :u) 28)
+  (t.eq (. (turing.neighbourhood grid 3 2) :v) 28)
+  (t.eq (. (turing.neighbourhood grid 1 1) :u) 20)
+  (t.eq (. (turing.neighbourhood grid 1 1) :v) 20)
+  (t.eq (. (turing.neighbourhood grid 4 3) :u) 32)
+  (t.eq (. (turing.neighbourhood grid 4 3) :v) 32))
 
 ;; Test update
-(let [u-grid (turing.build-grid-with-noise 10 10)
-      v-grid (turing.build-grid-with-noise 10 10)
+(let [grid (turing.build-grid-with-noise 10 10)
       parameters {:a 1 :b -1 :c 2 :d -1 :h 1 :k 1 :du 0.0001 :dv 0.0006}
-      [new-u-grid new-v-grid] (turing.update u-grid v-grid parameters 0.2)]
-  (t.is-table new-u-grid)
-  (t.is-table new-v-grid))
+      new-grid (turing.update grid parameters 0.2)]
+  (t.is-table new-grid))
 
 (t.run!)

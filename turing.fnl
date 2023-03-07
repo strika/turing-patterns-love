@@ -20,12 +20,12 @@
 (fn turing.build-grid-with-noise [columns rows]
   (fcollect [i 1 rows]
     (fcollect [j 1 columns]
-      (+ 1 (turing.noise)))))
+      (turing.build-cell-with-noise))))
 
 (fn turing.build-grid [columns rows]
   (fcollect [i 1 rows]
     (fcollect [j 1 columns]
-      1)))
+      (turing.build-cell))))
 
 (fn turing.rows [grid]
   (length grid))
@@ -40,35 +40,35 @@
         r (if (< r 1) (turing.rows grid) r)]
     (. grid r c)))
 
-(fn turing.update-cell [grid column row value]
-  (tset (. grid row) column value))
+(fn turing.update-cell [grid column row cell]
+  (tset (. grid row) column cell))
 
 (fn turing.neighbourhood [grid column row]
-  (accumulate [sum 0
+  (accumulate [cell {:u 0 :v 0}
                _ [dr dc] (ipairs neighbourhood-coordinates)]
-    (+ sum (turing.cell grid (+ column dc) (+ row dr)))))
+    (let [neighbour (turing.cell grid (+ column dc) (+ row dr))]
+      {:u (+ (. cell :u) (. neighbour :u))
+       :v (+ (. cell :v) (. neighbour :v))})))
 
-(fn turing.update [u-grid v-grid parameters dt]
+(fn turing.update [grid parameters dt]
   (local {: a : b : c : d : h : k : du : dv} parameters)
-  (local rows (turing.rows u-grid))
-  (local columns (turing.columns u-grid))
-  (local new-u-grid (turing.build-grid columns rows))
-  (local new-v-grid (turing.build-grid columns rows))
+  (local rows (turing.rows grid))
+  (local columns (turing.columns grid))
+  (local new-grid (turing.build-grid columns rows))
   (local dh (/ 1 rows))
   (for [i 1 rows]
     (for [j 1 columns]
-      (let [uc (turing.cell u-grid j i)
-            vc (turing.cell v-grid j i)
-            u-neighbourhood (turing.neighbourhood u-grid j i)
-            v-neighbourhood (turing.neighbourhood v-grid j i)
-            u-lap (/ (- u-neighbourhood (* 4 uc)) (* dh dh))
-            v-lap (/ (- v-neighbourhood (* 4 vc)) (* dh dh))
+      (let [cell (turing.cell grid j i)
+            uc (. cell :u)
+            vc (. cell :v)
+            neighbourhood (turing.neighbourhood grid j i)
+            u-lap (/ (- (. neighbourhood :u) (* 4 uc)) (* dh dh))
+            v-lap (/ (- (. neighbourhood :v) (* 4 vc)) (* dh dh))
             new-uc (+ uc (* (+ (* a (- uc h)) (* b (- vc k)) (* du u-lap)) dt))
             new-vc (+ vc (* (+ (* c (- uc h)) (* d (- vc k)) (* dv v-lap)) dt))
             new-uc (math.max (math.min new-uc 255) 0)
             new-vc (math.max (math.min new-vc 255) 0)]
-        (turing.update-cell u-grid j i new-uc)
-        (turing.update-cell v-grid j i new-vc))))
-  [u-grid v-grid])
+        (turing.update-cell new-grid j i {:u new-uc :v new-vc}))))
+  new-grid)
 
 turing

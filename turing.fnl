@@ -68,6 +68,6 @@
             new-uc (math.max (math.min new-uc 255) 0)
             new-vc (math.max (math.min new-vc 255) 0)]
         (turing.update-cell new-grid j i {:u new-uc :v new-vc}))))
-  new-grid)
+  [grid new-grid])
 
 turing

@@ -64,10 +64,12 @@
 
 ;; Test update-cell
 
-(let [grid [[1 2 3]
-            [4 5 6]]]
-  (turing.update-cell grid 2 1 42)
-  (t.eq (turing.cell grid 2 1) 42))
+(let [grid [[{:u 1 :v 1} {:u 2 :v 2} {:u 3 :v 3}]
+            [{:u 5 :v 5} {:u 6 :v 6} {:u 7 :v 7}]]]
+  (turing.update-cell grid 2 1 10 20)
+  (let [cell (turing.cell grid 2 1)]
+    (t.eq (. cell :u) 10)
+    (t.eq (. cell :v) 20)))
 
 ;; Test neighbourhood
 

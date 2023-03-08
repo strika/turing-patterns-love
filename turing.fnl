@@ -40,8 +40,9 @@
         r (if (< r 1) (turing.rows grid) r)]
     (. grid r c)))
 
-(fn turing.update-cell [grid column row cell]
-  (tset (. grid row) column cell))
+(fn turing.update-cell [grid column row u v]
+  (tset grid row column :u u)
+  (tset grid row column :v v))
 
 (fn turing.neighbourhood [grid column row]
   (accumulate [cell {:u 0 :v 0}
@@ -67,7 +68,7 @@
             new-vc (+ vc (* (+ (* c (- uc h)) (* d (- vc k)) (* dv v-lap)) dt))
             new-uc (math.max (math.min new-uc 255) 0)
             new-vc (math.max (math.min new-vc 255) 0)]
-        (turing.update-cell new-grid j i {:u new-uc :v new-vc}))))
+        (turing.update-cell new-grid j i new-uc new-vc))))
   [grid new-grid])
 
 turing

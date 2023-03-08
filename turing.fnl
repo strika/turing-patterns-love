@@ -48,8 +48,9 @@
   (accumulate [cell {:u 0 :v 0}
                _ [dr dc] (ipairs neighbourhood-coordinates)]
     (let [neighbour (turing.cell grid (+ column dc) (+ row dr))]
-      {:u (+ (. cell :u) (. neighbour :u))
-       :v (+ (. cell :v) (. neighbour :v))})))
+      (tset cell :u (+ (. cell :u) (. neighbour :u)))
+      (tset cell :v (+ (. cell :v) (. neighbour :v)))
+      cell)))
 
 (fn turing.update [grid new-grid parameters dt]
   (local {: a : b : c : d : h : k : du : dv} parameters)

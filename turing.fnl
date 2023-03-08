@@ -50,11 +50,10 @@
       {:u (+ (. cell :u) (. neighbour :u))
        :v (+ (. cell :v) (. neighbour :v))})))
 
-(fn turing.update [grid parameters dt]
+(fn turing.update [grid new-grid parameters dt]
   (local {: a : b : c : d : h : k : du : dv} parameters)
   (local rows (turing.rows grid))
   (local columns (turing.columns grid))
-  (local new-grid (turing.build-grid columns rows))
   (local dh (/ 1 rows))
   (for [i 1 rows]
     (for [j 1 columns]

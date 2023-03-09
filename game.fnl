@@ -16,14 +16,13 @@
 
 (fn love.load []
   (set parameters {:a 1 :b -1 :c 2 :d -1.5 :h 1 :k 1 :du 0.0001 :dv 0.0006})
-  (set grid (turing.build-grid-with-noise columns rows))
-  (set new-grid (turing.build-grid columns rows)))
+  (set grid (turing.build-grid-with-noise columns rows)))
 
 (fn love.update [dt]
   (set iteration (+ iteration 1))
   (if (= 0 (% iteration 1000))
     (print "Iteration: " iteration))
-  (set [new-grid grid] (turing.update grid new-grid parameters fdt)))
+  (set grid (turing.update grid parameters fdt)))
 
 (fn love.draw []
   (for [x 1 columns]

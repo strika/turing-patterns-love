@@ -26,7 +26,9 @@
                     (build-experiment {:a 1.02 :b -1 :c 2 :d -1.5 :h 1 :k 1 :du 0.0001 :dv 0.0006})]))
 
 (fn love.load []
-  (generate-experiments))
+  (generate-experiments)
+  (with-open [experiment-log (io.open "experiments.log" :w)]
+    (experiment-log:write "a,b,c,d,h,k,du,dv\n")))
 
 (fn love.update [dt]
   (if (> experiment-index (length experiments))
@@ -62,4 +64,16 @@
                                      pixel-size
                                      pixel-size))))
       (if (= iteration experiment-end-iteration)
-        (love.graphics.captureScreenshot (.. "experiment-" experiment-index "-iteration-" iteration ".png"))))))
+        (do
+          (let [params (. experiment :parameters)
+                details (.. (. params :a) ","
+                            (. params :b) ","
+                            (. params :c) ","
+                            (. params :d) ","
+                            (. params :h) ","
+                            (. params :k) ","
+                            (. params :du) ","
+                            (. params :dv) "\n")]
+            (love.graphics.captureScreenshot (.. "experiment-" experiment-index "-iteration-" iteration ".png"))
+            (with-open [experiment-log (io.open "experiments.log" :a)]
+              (experiment-log:write details))))))))

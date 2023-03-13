@@ -1,6 +1,7 @@
 (local turing (require :turing))
 
 (local color-multiplier 25)
+(local log-file "experiments.csv")
 
 (local fdt 0.01) ; Fixed dt
 
@@ -25,10 +26,23 @@
                     (build-experiment {:a 0.98 :b -1 :c 2 :d -1.5 :h 1 :k 1 :du 0.0001 :dv 0.0006})
                     (build-experiment {:a 1.02 :b -1 :c 2 :d -1.5 :h 1 :k 1 :du 0.0001 :dv 0.0006})]))
 
+(fn log-experiment-details [experiment]
+  (let [params (. experiment :parameters)
+        details (.. (. params :a) ","
+                    (. params :b) ","
+                    (. params :c) ","
+                    (. params :d) ","
+                    (. params :h) ","
+                    (. params :k) ","
+                    (. params :du) ","
+                    (. params :dv) "\n")]
+    (with-open [log (io.open log-file :a)]
+      (log:write details))))
+
 (fn love.load []
   (generate-experiments)
-  (with-open [experiment-log (io.open "experiments.log" :w)]
-    (experiment-log:write "a,b,c,d,h,k,du,dv\n")))
+  (with-open [log (io.open log-file :w)]
+    (log:write "a,b,c,d,h,k,du,dv\n")))
 
 (fn love.update [dt]
   (if (> experiment-index (length experiments))
@@ -51,7 +65,6 @@
       (local experiment (current-experiment))
       (local grid (. experiment :grid))
       (local iteration (. experiment :iteration))
-      (print iteration)
       (for [x 1 columns]
         (for [y 1 rows]
           (let [{: u : v } (turing.cell grid x y)
@@ -65,15 +78,5 @@
                                      pixel-size))))
       (if (= iteration experiment-end-iteration)
         (do
-          (let [params (. experiment :parameters)
-                details (.. (. params :a) ","
-                            (. params :b) ","
-                            (. params :c) ","
-                            (. params :d) ","
-                            (. params :h) ","
-                            (. params :k) ","
-                            (. params :du) ","
-                            (. params :dv) "\n")]
-            (love.graphics.captureScreenshot (.. "experiment-" experiment-index "-iteration-" iteration ".png"))
-            (with-open [experiment-log (io.open "experiments.log" :a)]
-              (experiment-log:write details))))))))
+          (love.graphics.captureScreenshot (.. "experiment-" experiment-index "-iteration-" iteration ".png"))
+          (log-experiment-details experiment))))))

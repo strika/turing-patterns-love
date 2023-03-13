@@ -39,6 +39,20 @@
     (with-open [log (io.open log-file :a)]
       (log:write details))))
 
+(fn draw-experiment [experiment]
+  (local grid (. experiment :grid))
+  (for [x 1 columns]
+    (for [y 1 rows]
+      (let [{: u : v } (turing.cell grid x y)
+            blue (math.max (math.min (* color-multiplier u) 255) 0)
+            red (math.max (math.min (* color-multiplier v) 255) 0)]
+        (love.graphics.setColor (love.math.colorFromBytes red 0 blue))
+        (love.graphics.rectangle "fill"
+                                 (* (- x 1) pixel-size)
+                                 (* (- y 1) pixel-size)
+                                 pixel-size
+                                 pixel-size)))))
+
 (fn love.load []
   (generate-experiments)
   (with-open [log (io.open log-file :w)]
@@ -61,21 +75,9 @@
 
 (fn love.draw []
   (if (<= experiment-index (length experiments))
-    (do
-      (local experiment (current-experiment))
-      (local grid (. experiment :grid))
-      (local iteration (. experiment :iteration))
-      (for [x 1 columns]
-        (for [y 1 rows]
-          (let [{: u : v } (turing.cell grid x y)
-                blue (math.max (math.min (* color-multiplier u) 255) 0)
-                red (math.max (math.min (* color-multiplier v) 255) 0)]
-            (love.graphics.setColor (love.math.colorFromBytes red 0 blue))
-            (love.graphics.rectangle "fill"
-                                     (* (- x 1) pixel-size)
-                                     (* (- y 1) pixel-size)
-                                     pixel-size
-                                     pixel-size))))
+    (let [experiment (current-experiment)
+          iteration (. experiment :iteration)]
+      (draw-experiment experiment)
       (if (= iteration experiment-end-iteration)
         (do
           (love.graphics.captureScreenshot (.. "experiment-" experiment-index "-iteration-" iteration ".png"))

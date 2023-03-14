@@ -22,9 +22,9 @@
   (. experiments experiment-index))
 
 (fn generate-experiments []
-  (set experiments [(build-experiment {:a 1 :b -1 :c 2 :d -1.5 :h 1 :k 1 :du 0.0001 :dv 0.0006})
-                    (build-experiment {:a 0.98 :b -1 :c 2 :d -1.5 :h 1 :k 1 :du 0.0001 :dv 0.0006})
-                    (build-experiment {:a 1.02 :b -1 :c 2 :d -1.5 :h 1 :k 1 :du 0.0001 :dv 0.0006})]))
+  [(build-experiment {:a 1 :b -1 :c 2 :d -1.5 :h 1 :k 1 :du 0.0001 :dv 0.0006})
+   (build-experiment {:a 0.98 :b -1 :c 2 :d -1.5 :h 1 :k 1 :du 0.0001 :dv 0.0006})
+   (build-experiment {:a 1.02 :b -1 :c 2 :d -1.5 :h 1 :k 1 :du 0.0001 :dv 0.0006})])
 
 (fn log-experiment-details [experiment]
   (let [params (. experiment :parameters)
@@ -54,7 +54,7 @@
                                  pixel-size)))))
 
 (fn love.load []
-  (generate-experiments)
+  (set experiments (generate-experiments))
   (with-open [log (io.open log-file :w)]
     (log:write "a,b,c,d,h,k,du,dv\n")))
 

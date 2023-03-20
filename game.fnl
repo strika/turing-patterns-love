@@ -1,4 +1,5 @@
 (local turing (require :turing))
+(local experiment (require :experiment))
 
 (local color-multiplier 25)
 (local log-file "experiments.csv")
@@ -9,7 +10,7 @@
 (local rows 100)
 (local pixel-size 10)
 
-(var experiment-end-iteration 100)
+(var experiment-end-iteration 10000)
 (var experiment-index 1)
 (var experiments [])
 
@@ -22,9 +23,23 @@
   (. experiments experiment-index))
 
 (fn generate-experiments []
-  [(build-experiment {:a 1 :b -1 :c 2 :d -1.5 :h 1 :k 1 :du 0.0001 :dv 0.0006})
-   (build-experiment {:a 0.98 :b -1 :c 2 :d -1.5 :h 1 :k 1 :du 0.0001 :dv 0.0006})
-   (build-experiment {:a 1.02 :b -1 :c 2 :d -1.5 :h 1 :k 1 :du 0.0001 :dv 0.0006})])
+  (local parameters (experiment.generate-parameters {:a [0.9 1.1 0.1]
+                                                     :b [-1 -1 1]
+                                                     :c [2 2 1]
+                                                     :d [-1.5 -1.5 1]
+                                                     :h [1 1 1]
+                                                     :k [1 1 1]
+                                                     :du [0.0001 0.0001 0.0001]
+                                                     :dv [0.0006 0.0006 0.0001]}))
+  (local experiments-count (accumulate [c 0
+                                        _ _ (ipairs parameters)]
+                            (+ c 1)))
+  (print "Generating" experiments-count " experiments...")
+  (accumulate [experiments []
+               _ p (ipairs parameters)]
+    (do
+     (table.insert experiments (build-experiment p))
+     experiments)))
 
 (fn log-experiment-details [experiment]
   (let [params (. experiment :parameters)
@@ -55,6 +70,7 @@
 
 (fn love.load []
   (set experiments (generate-experiments))
+  (print "generated experiments")
   (with-open [log (io.open log-file :w)]
     (log:write "a,b,c,d,h,k,du,dv\n")))
 

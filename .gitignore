@@ -41,3 +41,6 @@ luac.out
 
 # Experiments log
 experiments.csv
+
+# Saved experiments
+experiments/*

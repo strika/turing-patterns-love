@@ -1,6 +1,8 @@
 (local turing (require :turing))
+(local experiment (require :experiment))
 
 (local color-multiplier 25)
+(local log-file "experiments.csv")
 
 (local fdt 0.01) ; Fixed dt
 
@@ -8,24 +10,52 @@
 (local rows 100)
 (local pixel-size 10)
 
-(var iteration 0)
+(var experiment-end-iteration 10000)
+(var experiment-index 1)
+(var experiments [])
 
-(var parameters nil)
-(var grid nil)
-(var new-grid nil)
+(fn build-experiment [parameters]
+  {:grid (turing.build-grid-with-noise columns rows)
+   :parameters parameters
+   :iteration 0})
 
-(fn love.load []
-  (set parameters {:a 1 :b -1 :c 2 :d -1.5 :h 1 :k 1 :du 0.0001 :dv 0.0006})
-  (set grid (turing.build-grid-with-noise columns rows))
-  (set new-grid (turing.build-grid columns rows)))
+(fn current-experiment []
+  (. experiments experiment-index))
 
-(fn love.update [dt]
-  (set iteration (+ iteration 1))
-  (if (= 0 (% iteration 1000))
-    (print "Iteration: " iteration))
-  (set [new-grid grid] (turing.update grid new-grid parameters fdt)))
+(fn generate-experiments []
+  (local parameters (experiment.generate-parameters {:a [0.9 1.1 0.1]
+                                                     :b [-1.1 -0.9 0.1]
+                                                     :c [1.9 2.1 0.11]
+                                                     :d [-1.6 -1.4 0.1]
+                                                     :h [0 2 1]
+                                                     :k [1 1 1]
+                                                     :du [0.0001 0.0001 0.0001]
+                                                     :dv [0.0005 0.0007 0.0001]}))
+  (local experiments-count (accumulate [c 0
+                                        _ _ (ipairs parameters)]
+                            (+ c 1)))
+  (print "Generating" experiments-count " experiments...")
+  (accumulate [experiments []
+               _ p (ipairs parameters)]
+    (do
+     (table.insert experiments (build-experiment p))
+     experiments)))
 
-(fn love.draw []
+(fn log-experiment-details [experiment]
+  (let [params (. experiment :parameters)
+        details (.. (. params :a) ","
+                    (. params :b) ","
+                    (. params :c) ","
+                    (. params :d) ","
+                    (. params :h) ","
+                    (. params :k) ","
+                    (. params :du) ","
+                    (. params :dv) "\n")]
+    (with-open [log (io.open log-file :a)]
+      (log:write details))))
+
+(fn draw-experiment [experiment]
+  (local grid (. experiment :grid))
   (for [x 1 columns]
     (for [y 1 rows]
       (let [{: u : v } (turing.cell grid x y)
@@ -36,6 +66,34 @@
                                  (* (- x 1) pixel-size)
                                  (* (- y 1) pixel-size)
                                  pixel-size
-                                 pixel-size))))
-  (if (= iteration 100000)
-    (love.graphics.captureScreenshot (.. "pattern-" iteration ".png"))))
+                                 pixel-size)))))
+
+(fn love.load []
+  (set experiments (generate-experiments))
+  (with-open [log (io.open log-file :w)]
+    (log:write "a,b,c,d,h,k,du,dv\n")))
+
+(fn love.update [dt]
+  (if (> experiment-index (length experiments))
+    (do
+      (print "Done.")
+      (love.event.quit))
+    (do
+      (let [experiment (current-experiment)
+            iteration (+ (. experiment :iteration) 1)
+            grid (. experiment :grid)
+            parameters (. experiment :parameters)]
+        (tset experiment :iteration iteration)
+        (tset experiment :grid (turing.update grid parameters fdt))
+        (if (> iteration experiment-end-iteration)
+          (set experiment-index (+ experiment-index 1)))))))
+
+(fn love.draw []
+  (if (<= experiment-index (length experiments))
+    (let [experiment (current-experiment)
+          iteration (. experiment :iteration)]
+      (draw-experiment experiment)
+      (if (= iteration experiment-end-iteration)
+        (do
+          (love.graphics.captureScreenshot (.. "experiment-" experiment-index "-iteration-" iteration ".png"))
+          (log-experiment-details experiment))))))

@@ -87,12 +87,9 @@
 
 ;; Test update
 (let [grid (turing.build-grid-with-noise 10 10)
-      new-grid (turing.build-grid 10 10)
       parameters {:a 1 :b -1 :c 2 :d -1 :h 1 :k 1 :du 0.0001 :dv 0.0006}
-      [old-grid new-grid] (turing.update grid new-grid parameters 0.2)]
+      new-grid (turing.update grid parameters 0.2)]
   (t.eq (turing.columns new-grid) 10)
-  (t.eq (turing.rows new-grid) 10)
-  (t.eq (turing.columns grid) 10)
-  (t.eq (turing.rows grid) 10))
+  (t.eq (turing.rows new-grid) 10))
 
 (t.run!)

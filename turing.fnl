@@ -52,11 +52,12 @@
       (tset cell :v (+ (. cell :v) (. neighbour :v)))
       cell)))
 
-(fn turing.update [grid new-grid parameters dt]
+(fn turing.update [grid parameters dt]
   (local {: a : b : c : d : h : k : du : dv} parameters)
   (local rows (turing.rows grid))
   (local columns (turing.columns grid))
   (local dh (/ 1 rows))
+  (local new-grid (turing.build-grid columns rows))
   (for [i 1 rows]
     (for [j 1 columns]
       (let [cell (turing.cell grid j i)
@@ -70,6 +71,6 @@
             new-uc (math.max (math.min new-uc 255) 0)
             new-vc (math.max (math.min new-vc 255) 0)]
         (turing.update-cell new-grid j i new-uc new-vc))))
-  [grid new-grid])
+  new-grid)
 
 turing

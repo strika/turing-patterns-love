@@ -1,6 +1,23 @@
 # Turing Patterns Simulation
 
-Turing patterns simulation implemented in Fennel and Love.
+[Turing patterns](https://en.wikipedia.org/wiki/Turing_pattern) simulation
+implemented in Fennel and Love.
+
+Some patterns generated with the simulation:
+
+![Pattern 1](pattern-1.png)
+
+![Pattern 2](pattern-2.png)
+
+![Pattern 3](pattern-3.png)
+
+![Pattern 4](pattern-4.png)
+
+![Pattern 5](pattern-5.png)
+
+![Pattern 6](pattern-6.png)
+
+![Pattern 7](pattern-7.png)
 
 ## Setup
 

@@ -10,7 +10,7 @@
 (local rows 100)
 (local pixel-size 10)
 
-(var experiment-end-iteration 10000)
+(var experiment-end-iteration 30000)
 (var experiment-index 1)
 (var experiments [])
 

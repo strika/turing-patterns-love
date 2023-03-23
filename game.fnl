@@ -23,14 +23,14 @@
   (. experiments experiment-index))
 
 (fn generate-experiments []
-  (local parameters (experiment.generate-parameters {:a [0.9 1.1 0.1]
-                                                     :b [-1.1 -0.9 0.1]
-                                                     :c [1.9 2.1 0.11]
-                                                     :d [-1.6 -1.4 0.1]
-                                                     :h [0 2 1]
+  (local parameters (experiment.generate-parameters {:a [1 1 0.1]
+                                                     :b [-1 -1 0.1]
+                                                     :c [2 2 0.1]
+                                                     :d [-1.5 -1.5 0.1]
+                                                     :h [1 1 1]
                                                      :k [1 1 1]
                                                      :du [0.0001 0.0001 0.0001]
-                                                     :dv [0.0005 0.0007 0.0001]}))
+                                                     :dv [0.0006 0.0006 0.0001]}))
   (local experiments-count (accumulate [c 0
                                         _ _ (ipairs parameters)]
                             (+ c 1)))
